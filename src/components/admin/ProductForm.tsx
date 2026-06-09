@@ -7,6 +7,27 @@ import { useState } from "react";
 
 import { supabase } from "@/lib/supabase";
 
+type InitialProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  short_description: string | null;
+  description: string | null;
+  price: number | null;
+  compare_at_price: number | null;
+  stock: number | null;
+  is_featured: boolean | null;
+  is_active: boolean | null;
+  categories: {
+    slug: string;
+  } | null;
+};
+
+type ProductFormProps = {
+  mode?: "create" | "edit";
+  initialProduct?: InitialProduct | null;
+};
+
 const categories = [
   { label: "Matelas", value: "matelas" },
   { label: "Sommiers", value: "sommiers" },
@@ -26,21 +47,25 @@ function generateSlug(value: string) {
     .replace(/^-|-$/g, "");
 }
 
-export default function ProductForm() {
+export default function ProductForm({
+  mode = "create",
+  initialProduct = null,
+}: ProductFormProps) {
   const router = useRouter();
+  const isEditMode = mode === "edit" && initialProduct;
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    slug: "",
-    category: "",
-    short_description: "",
-    description: "",
-    price: "",
-    compare_at_price: "",
-    stock: "0",
-    is_featured: false,
-    is_active: true,
+    name: initialProduct?.name ?? "",
+    slug: initialProduct?.slug ?? "",
+    category: initialProduct?.categories?.slug ?? "",
+    short_description: initialProduct?.short_description ?? "",
+    description: initialProduct?.description ?? "",
+    price: initialProduct?.price?.toString() ?? "",
+    compare_at_price: initialProduct?.compare_at_price?.toString() ?? "",
+    stock: initialProduct?.stock?.toString() ?? "0",
+    is_featured: initialProduct?.is_featured ?? false,
+    is_active: initialProduct?.is_active ?? true,
   });
 
   const handleChange = (
@@ -69,7 +94,7 @@ export default function ProductForm() {
     setFormData((previous) => ({
       ...previous,
       name: value,
-      slug: generateSlug(value),
+      slug: isEditMode ? previous.slug : generateSlug(value),
     }));
   };
 
@@ -87,12 +112,6 @@ export default function ProductForm() {
         .eq("slug", categorySlug)
         .maybeSingle();
 
-      console.log("CATEGORY SELECT", {
-        slug: categorySlug,
-        data: category,
-        error: categoryError,
-      });
-
       if (categoryError) {
         throw categoryError;
       }
@@ -102,7 +121,7 @@ export default function ProductForm() {
         return;
       }
 
-      const { error } = await supabase.from("products").insert({
+      const productPayload = {
         category_id: category.id,
         name: formData.name.trim(),
         slug: formData.slug.trim(),
@@ -115,7 +134,14 @@ export default function ProductForm() {
         stock: Number(formData.stock),
         is_featured: formData.is_featured,
         is_active: formData.is_active,
-      });
+      };
+
+      const { error } = isEditMode
+        ? await supabase
+            .from("products")
+            .update(productPayload)
+            .eq("id", initialProduct.id)
+        : await supabase.from("products").insert(productPayload);
 
       if (error) {
         throw error;
@@ -124,8 +150,8 @@ export default function ProductForm() {
       router.push("/admin/products");
       router.refresh();
     } catch (error) {
-      console.error("Erreur création produit:", error);
-      alert("Erreur lors de la création du produit.");
+      console.error("Erreur sauvegarde produit:", error);
+      alert("Erreur lors de la sauvegarde du produit.");
     } finally {
       setLoading(false);
     }
@@ -307,7 +333,13 @@ export default function ProductForm() {
           disabled={loading}
           className="rounded-full bg-[#103a63] px-8 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Création..." : "Créer le produit"}
+          {loading
+            ? isEditMode
+              ? "Modification..."
+              : "Création..."
+            : isEditMode
+              ? "Modifier le produit"
+              : "Créer le produit"}
         </button>
       </div>
     </form>

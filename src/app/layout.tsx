@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import OrganizationSchema from "@/components/seo/OrganizationSchema";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,12 +39,7 @@ export const metadata: Metadata = {
     "Koa'lit",
   ],
 
-  authors: [
-    {
-      name: "Koa'lit",
-    },
-  ],
-
+  authors: [{ name: "Koa'lit" }],
   creator: "Koa'lit",
 
   robots: {
@@ -99,6 +96,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[#F8F5F0] text-[#111111]">
+        <OrganizationSchema />
         {children}
       </body>
     </html>
