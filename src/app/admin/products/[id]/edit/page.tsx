@@ -14,6 +14,15 @@ type ProductImage = {
   position: number | null;
 };
 
+type ProductCategory =
+  | {
+      slug: string;
+    }
+  | {
+      slug: string;
+    }[]
+  | null;
+
 type Product = {
   id: string;
   name: string;
@@ -25,9 +34,7 @@ type Product = {
   stock: number | null;
   is_featured: boolean | null;
   is_active: boolean | null;
-  categories: {
-    slug: string;
-  } | null;
+  categories: ProductCategory;
   product_images: ProductImage[] | null;
 };
 
@@ -77,7 +84,7 @@ export default async function EditProductPage({ params }: Props) {
     notFound();
   }
 
-  const typedProduct = product as Product;
+  const typedProduct = product as unknown as Product;
 
   return (
     <main className="min-h-screen bg-[#f8f6f1]">
