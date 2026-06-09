@@ -1,7 +1,9 @@
+// src/components/layout/Navbar.tsx
+
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Menu, X } from "lucide-react";
 import clsx from "clsx";
 
@@ -15,17 +17,36 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const mobileMenuId = useId();
+
   const [isOpen, setIsOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setHasScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setHasScrolled(window.scrollY > 24);
+    };
 
     onScroll();
-    window.addEventListener("scroll", onScroll);
 
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
 
   return (
     <header className="fixed left-0 top-0 z-50 w-full px-4 pt-4 md:px-6">
@@ -39,13 +60,17 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          className="relative z-50 text-xl font-black tracking-tight text-[var(--koalit-blue)]"
-          onClick={() => setIsOpen(false)}
+          onClick={closeMenu}
+          className="relative z-50 text-xl font-black tracking-tight text-[var(--koalit-blue)] transition hover:text-[var(--koalit-blue-dark)]"
+          aria-label="Retour à l’accueil Koa’lit"
         >
           Koa&apos;lit
         </Link>
 
-        <nav className="hidden items-center gap-2 rounded-full bg-white/60 p-1 text-sm font-medium text-[var(--koalit-blue)] backdrop-blur-xl lg:flex">
+        <nav
+          aria-label="Navigation principale"
+          className="hidden items-center gap-2 rounded-full bg-white/60 p-1 text-sm font-medium text-[var(--koalit-blue)] backdrop-blur-xl lg:flex"
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -70,13 +95,16 @@ export default function Navbar() {
           type="button"
           onClick={() => setIsOpen((value) => !value)}
           aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={isOpen}
+          aria-controls={mobileMenuId}
           className="relative z-50 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--koalit-blue)] text-white shadow-lg transition hover:bg-[var(--koalit-blue-dark)] lg:hidden"
         >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
+          {isOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
         </button>
       </div>
 
       <div
+        id={mobileMenuId}
         className={clsx(
           "fixed inset-x-4 top-20 z-40 overflow-hidden rounded-[2rem] border border-white/70 bg-[var(--koalit-white)]/95 shadow-[0_24px_80px_rgba(8,41,71,0.18)] backdrop-blur-2xl transition-all duration-500 lg:hidden",
           isOpen
@@ -84,12 +112,15 @@ export default function Navbar() {
             : "pointer-events-none -translate-y-4 opacity-0"
         )}
       >
-        <nav className="flex flex-col p-4">
+        <nav
+          aria-label="Navigation mobile"
+          className="flex flex-col p-4"
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => setIsOpen(false)}
+              onClick={closeMenu}
               className="rounded-2xl px-5 py-4 text-lg font-semibold text-[var(--koalit-blue)] transition hover:bg-[var(--koalit-blue-soft)]"
             >
               {link.label}
@@ -98,7 +129,7 @@ export default function Navbar() {
 
           <Link
             href="/contact"
-            onClick={() => setIsOpen(false)}
+            onClick={closeMenu}
             className="mt-3 rounded-full bg-[var(--koalit-gold)] px-6 py-4 text-center text-sm font-bold text-[var(--koalit-blue-dark)] transition hover:bg-[var(--koalit-gold-hover)]"
           >
             Réserver un essai
