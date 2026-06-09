@@ -3,7 +3,33 @@
 import { notFound } from "next/navigation";
 
 import ProductForm from "@/components/admin/ProductForm";
+import ProductImagesManager from "@/components/admin/ProductImagesManager";
 import { supabase } from "@/lib/supabase";
+
+type ProductImage = {
+  id: string;
+  image_url: string;
+  alt: string | null;
+  is_cover: boolean | null;
+  position: number | null;
+};
+
+type Product = {
+  id: string;
+  name: string;
+  slug: string;
+  short_description: string | null;
+  description: string | null;
+  price: number | null;
+  compare_at_price: number | null;
+  stock: number | null;
+  is_featured: boolean | null;
+  is_active: boolean | null;
+  categories: {
+    slug: string;
+  } | null;
+  product_images: ProductImage[] | null;
+};
 
 type Props = {
   params: Promise<{
@@ -30,15 +56,28 @@ export default async function EditProductPage({ params }: Props) {
       is_active,
       categories (
         slug
+      ),
+      product_images (
+        id,
+        image_url,
+        alt,
+        is_cover,
+        position
       )
     `
     )
     .eq("id", id)
+    .order("position", {
+      referencedTable: "product_images",
+      ascending: true,
+    })
     .maybeSingle();
 
   if (error || !product) {
     notFound();
   }
+
+  const typedProduct = product as Product;
 
   return (
     <main className="min-h-screen bg-[#f8f6f1]">
@@ -47,7 +86,13 @@ export default async function EditProductPage({ params }: Props) {
           Modifier le produit
         </h1>
 
-        <ProductForm mode="edit" initialProduct={product} />
+        <ProductForm mode="edit" initialProduct={typedProduct} />
+
+        <ProductImagesManager
+          productId={typedProduct.id}
+          productSlug={typedProduct.slug}
+          images={typedProduct.product_images ?? []}
+        />
       </section>
     </main>
   );

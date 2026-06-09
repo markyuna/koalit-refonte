@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import LocalBusinessSchema from "@/components/seo/LocalBusinessSchema";
 import OrganizationSchema from "@/components/seo/OrganizationSchema";
 
 import "./globals.css";
@@ -97,6 +98,7 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-[#F8F5F0] text-[#111111]">
         <OrganizationSchema />
+        <LocalBusinessSchema />
         {children}
       </body>
     </html>
