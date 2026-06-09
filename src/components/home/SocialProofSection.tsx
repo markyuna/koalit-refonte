@@ -1,5 +1,3 @@
-// src/components/home/SocialProofSection.tsx
-
 import { Award, ShieldCheck, Sparkles, Star } from "lucide-react";
 
 const reviews = [
@@ -21,7 +19,7 @@ const reviews = [
 ];
 
 const stats = [
-  { value: "4.8/5", label: "Satisfaction client" },
+  { value: "4.9/5", label: "Satisfaction client" },
   { value: "+15 ans", label: "Expertise sommeil" },
   { value: "100%", label: "Conseil personnalisé" },
 ];
@@ -46,24 +44,24 @@ const trustItems = [
 
 export default function SocialProofSection() {
   return (
-    <section className="relative overflow-hidden bg-[#F8F5F0] px-6 py-24 md:py-32">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(184,155,114,0.18),transparent_32%),radial-gradient(circle_at_85%_80%,rgba(110,86,65,0.12),transparent_34%)]" />
+    <section className="relative overflow-hidden bg-[var(--koalit-cream)] px-6 py-24 md:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(217,196,90,0.18),transparent_32%),radial-gradient(circle_at_85%_80%,rgba(16,58,99,0.13),transparent_34%)]" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#DCCDBE] bg-white/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#6E5641] shadow-[0_16px_50px_rgba(17,17,17,0.05)] backdrop-blur-xl">
-              <Star className="h-3.5 w-3.5 fill-[#B89B72] text-[#B89B72]" />
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--koalit-gold)]/45 bg-white/60 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-[var(--koalit-blue)] shadow-[0_16px_50px_rgba(8,41,71,0.06)] backdrop-blur-xl">
+              <Star className="h-3.5 w-3.5 fill-[var(--koalit-gold)] text-[var(--koalit-gold)]" />
               Preuve sociale
             </div>
 
-            <h2 className="max-w-3xl text-4xl font-semibold leading-[1] tracking-[-0.04em] text-[#111111] md:text-6xl">
+            <h2 className="max-w-3xl text-4xl font-semibold leading-[1] tracking-[-0.04em] text-[var(--koalit-blue-dark)] md:text-6xl">
               Une expérience pensée pour inspirer confiance dès le premier
               contact.
             </h2>
 
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#6E5641]">
-              Koalit accompagne chaque client avec une approche humaine,
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[var(--koalit-text)]">
+              Koa&apos;lit accompagne chaque client avec une approche humaine,
               experte et rassurante pour choisir une literie réellement adaptée
               à ses besoins.
             </p>
@@ -73,12 +71,13 @@ export default function SocialProofSection() {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-[2rem] border border-white/70 bg-white/65 p-6 shadow-[0_24px_70px_rgba(17,17,17,0.06)] backdrop-blur-xl"
+                className="rounded-[2rem] border border-white/70 bg-white/70 p-6 shadow-[0_24px_70px_rgba(8,41,71,0.08)] backdrop-blur-xl"
               >
-                <p className="text-3xl font-semibold tracking-tight text-[#111111]">
+                <p className="text-3xl font-bold tracking-tight text-[var(--koalit-blue)]">
                   {stat.value}
                 </p>
-                <p className="mt-2 text-sm leading-6 text-[#6E5641]">
+
+                <p className="mt-2 text-sm leading-6 text-[var(--koalit-text)]">
                   {stat.label}
                 </p>
               </div>
@@ -90,30 +89,33 @@ export default function SocialProofSection() {
           {reviews.map((review) => (
             <article
               key={review.name}
-              className="group rounded-[2.25rem] border border-white/70 bg-white/70 p-7 shadow-[0_28px_90px_rgba(17,17,17,0.07)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white"
+              className="group rounded-[2.25rem] border border-white/70 bg-white/75 p-7 shadow-[0_28px_90px_rgba(8,41,71,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white"
             >
               <div className="mb-6 flex gap-1">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <Star
                     key={index}
-                    className="h-4 w-4 fill-[#B89B72] text-[#B89B72]"
+                    className="h-4 w-4 fill-[var(--koalit-gold)] text-[var(--koalit-gold)]"
                   />
                 ))}
               </div>
 
-              <p className="text-base leading-8 text-[#111111]">
+              <p className="text-base leading-8 text-[var(--koalit-blue-dark)]">
                 “{review.text}”
               </p>
 
-              <div className="mt-8 flex items-center justify-between border-t border-[#E8E5E0] pt-5">
+              <div className="mt-8 flex items-center justify-between border-t border-[var(--koalit-blue)]/10 pt-5">
                 <div>
-                  <p className="font-semibold text-[#111111]">{review.name}</p>
-                  <p className="mt-1 text-sm text-[#9D8D7C]">
+                  <p className="font-semibold text-[var(--koalit-blue-dark)]">
+                    {review.name}
+                  </p>
+
+                  <p className="mt-1 text-sm text-[var(--koalit-muted)]">
                     {review.location}
                   </p>
                 </div>
 
-                <div className="rounded-full bg-[#111111] px-4 py-2 text-xs font-semibold text-white">
+                <div className="rounded-full bg-[var(--koalit-blue)] px-4 py-2 text-xs font-bold text-white">
                   Avis client
                 </div>
               </div>
@@ -128,17 +130,19 @@ export default function SocialProofSection() {
             return (
               <div
                 key={item.title}
-                className="rounded-[2rem] border border-[#E8E5E0] bg-white/45 p-7 backdrop-blur-xl"
+                className="rounded-[2rem] border border-[var(--koalit-blue)]/10 bg-white/55 p-7 shadow-[0_18px_55px_rgba(8,41,71,0.06)] backdrop-blur-xl"
               >
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#111111] text-white shadow-[0_18px_45px_rgba(17,17,17,0.16)]">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--koalit-blue)] text-white shadow-[0_18px_45px_rgba(8,41,71,0.18)]">
                   <Icon className="h-5 w-5" />
                 </div>
 
-                <h3 className="text-lg font-semibold text-[#111111]">
+                <h3 className="text-lg font-semibold text-[var(--koalit-blue-dark)]">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 leading-7 text-[#6E5641]">{item.text}</p>
+                <p className="mt-3 leading-7 text-[var(--koalit-text)]">
+                  {item.text}
+                </p>
               </div>
             );
           })}

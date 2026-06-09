@@ -1,4 +1,3 @@
-// src/components/layout/Navbar.tsx
 "use client";
 
 import Link from "next/link";
@@ -32,24 +31,24 @@ export default function Navbar() {
         className={clsx(
           "mx-auto flex max-w-7xl items-center justify-between rounded-full border px-5 py-3 transition-all duration-500",
           hasScrolled
-            ? "border-white/70 bg-[#F8F5F0]/80 shadow-[0_18px_60px_rgba(17,17,17,0.10)] backdrop-blur-2xl"
-            : "border-transparent bg-transparent"
+            ? "border-white/70 bg-[var(--koalit-white)]/90 shadow-[0_18px_60px_rgba(8,41,71,0.14)] backdrop-blur-2xl"
+            : "border-transparent bg-[var(--koalit-white)]/20 backdrop-blur-sm"
         )}
       >
         <Link
           href="/"
-          className="relative z-50 text-xl font-semibold tracking-tight text-[#111111]"
+          className="relative z-50 text-xl font-black tracking-tight text-[var(--koalit-blue)]"
           onClick={() => setIsOpen(false)}
         >
-          Koalit
+          Koa&apos;lit
         </Link>
 
-        <nav className="hidden items-center gap-2 rounded-full bg-white/45 p-1 text-sm text-[#6E5641] backdrop-blur-xl md:flex">
+        <nav className="hidden items-center gap-2 rounded-full bg-white/60 p-1 text-sm font-medium text-[var(--koalit-blue)] backdrop-blur-xl md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-full px-4 py-2 transition hover:bg-white hover:text-[#111111]"
+              className="rounded-full px-4 py-2 transition hover:bg-[var(--koalit-blue)] hover:text-white"
             >
               {link.label}
             </Link>
@@ -59,7 +58,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <Link
             href="#contact"
-            className="rounded-full bg-[#111111] px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(17,17,17,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#6E5641]"
+            className="rounded-full bg-[var(--koalit-gold)] px-6 py-3 text-sm font-bold text-[var(--koalit-blue-dark)] shadow-[0_14px_40px_rgba(217,196,90,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--koalit-gold-hover)]"
           >
             Réserver un essai
           </Link>
@@ -69,7 +68,7 @@ export default function Navbar() {
           type="button"
           onClick={() => setIsOpen((value) => !value)}
           aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          className="relative z-50 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#111111] text-white shadow-lg transition hover:bg-[#6E5641] md:hidden"
+          className="relative z-50 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--koalit-blue)] text-white shadow-lg transition hover:bg-[var(--koalit-blue-dark)] md:hidden"
         >
           {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -77,7 +76,7 @@ export default function Navbar() {
 
       <div
         className={clsx(
-          "fixed inset-x-4 top-20 z-40 overflow-hidden rounded-[2rem] border border-white/70 bg-[#F8F5F0]/95 shadow-[0_24px_80px_rgba(17,17,17,0.16)] backdrop-blur-2xl transition-all duration-500 md:hidden",
+          "fixed inset-x-4 top-20 z-40 overflow-hidden rounded-[2rem] border border-white/70 bg-[var(--koalit-white)]/95 shadow-[0_24px_80px_rgba(8,41,71,0.18)] backdrop-blur-2xl transition-all duration-500 md:hidden",
           isOpen
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-4 opacity-0"
@@ -89,7 +88,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="rounded-2xl px-5 py-4 text-lg font-medium text-[#111111] transition hover:bg-white"
+              className="rounded-2xl px-5 py-4 text-lg font-semibold text-[var(--koalit-blue)] transition hover:bg-[var(--koalit-blue-soft)]"
             >
               {link.label}
             </Link>
@@ -98,7 +97,7 @@ export default function Navbar() {
           <Link
             href="#contact"
             onClick={() => setIsOpen(false)}
-            className="mt-3 rounded-full bg-[#111111] px-6 py-4 text-center text-sm font-semibold text-white transition hover:bg-[#6E5641]"
+            className="mt-3 rounded-full bg-[var(--koalit-gold)] px-6 py-4 text-center text-sm font-bold text-[var(--koalit-blue-dark)] transition hover:bg-[var(--koalit-gold-hover)]"
           >
             Réserver un essai
           </Link>
