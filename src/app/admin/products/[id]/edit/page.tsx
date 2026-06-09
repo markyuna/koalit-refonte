@@ -38,11 +38,23 @@ type Product = {
   product_images: ProductImage[] | null;
 };
 
+type InitialProduct = Omit<Product, "categories"> & {
+  categories: { slug: string } | null;
+};
+
 type Props = {
   params: Promise<{
     id: string;
   }>;
 };
+
+function normalizeCategory(category: ProductCategory): { slug: string } | null {
+  if (Array.isArray(category)) {
+    return category[0] ?? null;
+  }
+
+  return category;
+}
 
 export default async function EditProductPage({ params }: Props) {
   const { id } = await params;
@@ -86,6 +98,11 @@ export default async function EditProductPage({ params }: Props) {
 
   const typedProduct = product as unknown as Product;
 
+  const initialProduct: InitialProduct = {
+    ...typedProduct,
+    categories: normalizeCategory(typedProduct.categories),
+  };
+
   return (
     <main className="min-h-screen bg-[#f8f6f1]">
       <section className="mx-auto max-w-5xl px-6 py-16">
@@ -93,7 +110,7 @@ export default async function EditProductPage({ params }: Props) {
           Modifier le produit
         </h1>
 
-        <ProductForm mode="edit" initialProduct={typedProduct} />
+        <ProductForm mode="edit" initialProduct={initialProduct} />
 
         <ProductImagesManager
           productId={typedProduct.id}
