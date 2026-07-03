@@ -62,14 +62,6 @@ export const metadata: Metadata = {
     siteName: "Koa'lit",
     locale: "fr_FR",
     type: "website",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Koa'lit Literie",
-      },
-    ],
   },
 
   twitter: {
@@ -77,7 +69,6 @@ export const metadata: Metadata = {
     title: "Koa'lit Literie",
     description:
       "Literie premium et accompagnement personnalisé pour un sommeil réparateur.",
-    images: ["/og-image.jpg"],
   },
 
   alternates: {
