@@ -20,7 +20,7 @@ import {
 export const metadata: Metadata = {
   title: "Magasin de literie à Osny | Koa'lit",
   description:
-    "Découvrez le magasin Koa'lit Literie à Osny. Conseils personnalisés, matelas, sommiers et solutions de literie adaptées à chaque profil.",
+    "Découvrez le magasin Koa'lit Literie à Osny. Conseils personnalisés, matelas et solutions de literie adaptées à chaque profil.",
 };
 
 const storeInfos = [
@@ -95,9 +95,8 @@ export default function MagasinPage() {
               <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-700">
                 Chez Koa&apos;lit, votre matelas ne devrait pas être un
                 standard, mais le prolongement de votre santé. Venez découvrir
-                nos matelas, sommiers et solutions de literie dans un espace
-                pensé pour vous accompagner avec des conseils simples, humains
-                et personnalisés.
+                notre sélection de matelas dans un espace pensé pour vous
+                accompagner avec des conseils simples, humains et personnalisés.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">

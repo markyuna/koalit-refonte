@@ -22,7 +22,6 @@ type Result = {
   title: string;
   description: string;
   mattressAdvice: string;
-  baseAdvice: string;
   pillowAdvice: string;
 };
 
@@ -55,7 +54,7 @@ const questions: Question[] = [
   {
     id: "need",
     question: "Que recherchez-vous en priorité ?",
-    options: ["Matelas", "Sommier", "Oreiller", "Pack complet"],
+    options: ["Matelas", "Oreiller", "Pack complet"],
   },
 ];
 
@@ -85,8 +84,6 @@ export default function QuizSommeil() {
           "D’après vos réponses, votre literie idéale doit privilégier un excellent maintien du dos, une bonne stabilité et un confort qui accompagne la récupération nocturne.",
         mattressAdvice:
           "Nous vous conseillons un matelas avec un soutien ferme ou équilibré, capable de maintenir correctement la colonne vertébrale pendant la nuit.",
-        baseAdvice:
-          "Un sommier adapté permettra d’améliorer la stabilité du couchage et de prolonger la durée de vie du matelas.",
         pillowAdvice:
           "Un oreiller ergonomique peut aider à mieux aligner la nuque, les épaules et le dos.",
       };
@@ -99,8 +96,6 @@ export default function QuizSommeil() {
           "Votre profil indique un besoin de fraîcheur pendant la nuit. Une literie respirante et bien ventilée sera plus adaptée à votre confort.",
         mattressAdvice:
           "Nous vous conseillons un matelas respirant, avec une bonne circulation de l’air et un accueil confortable.",
-        baseAdvice:
-          "Un sommier bien ventilé aide à limiter l’humidité et améliore l’aération générale de la literie.",
         pillowAdvice:
           "Un oreiller thermorégulant ou respirant peut apporter plus de fraîcheur au niveau de la tête et de la nuque.",
       };
@@ -113,8 +108,6 @@ export default function QuizSommeil() {
           "Vous dormez à deux : l’indépendance de couchage, la stabilité et le confort partagé sont des critères essentiels pour mieux dormir.",
         mattressAdvice:
           "Nous vous conseillons un matelas offrant une bonne indépendance de couchage afin de limiter les mouvements ressentis pendant la nuit.",
-        baseAdvice:
-          "Un sommier de qualité apporte un meilleur maintien global et améliore le confort du couchage à deux.",
         pillowAdvice:
           "Chaque dormeur peut avoir besoin d’un oreiller différent selon sa position de sommeil et sa morphologie.",
       };
@@ -127,8 +120,6 @@ export default function QuizSommeil() {
           "Vous recherchez une sensation douce et accueillante. L’objectif est de trouver un confort moelleux sans perdre le maintien nécessaire au bon repos.",
         mattressAdvice:
           "Nous vous conseillons un matelas à l’accueil moelleux avec un soutien progressif pour éviter l’effet trop souple.",
-        baseAdvice:
-          "Un sommier compatible permettra de conserver l’équilibre entre souplesse, confort et maintien.",
         pillowAdvice:
           "Un oreiller confortable et adapté à votre position de sommeil renforcera la sensation cocooning.",
       };
@@ -141,8 +132,6 @@ export default function QuizSommeil() {
           "Votre profil semble correspondre à un besoin de stabilité, de maintien et de soutien régulier pendant toute la nuit.",
         mattressAdvice:
           "Nous vous conseillons un matelas ferme ou équilibré, adapté aux dormeurs qui recherchent une sensation de maintien.",
-        baseAdvice:
-          "Un sommier stable et résistant permettra d’accompagner efficacement le soutien du matelas.",
         pillowAdvice:
           "Un oreiller ni trop haut ni trop souple favorisera un meilleur alignement de la nuque.",
       };
@@ -152,11 +141,9 @@ export default function QuizSommeil() {
       return {
         title: "Profil solution complète",
         description:
-          "Votre besoin semble porter sur une literie harmonieuse dans son ensemble : matelas, sommier et oreiller doivent fonctionner ensemble.",
+          "Votre besoin semble porter sur une literie harmonieuse dans son ensemble : matelas et oreiller doivent fonctionner ensemble.",
         mattressAdvice:
           "Nous vous conseillons de choisir le matelas en fonction de votre morphologie, de votre confort souhaité et de vos habitudes de sommeil.",
-        baseAdvice:
-          "Un sommier compatible est essentiel pour obtenir le meilleur confort et préserver les qualités du matelas.",
         pillowAdvice:
           "L’oreiller finalise l’équilibre du couchage et joue un rôle important dans la qualité du sommeil.",
       };
@@ -168,8 +155,6 @@ export default function QuizSommeil() {
         "D’après vos réponses, votre confort idéal semble être un soutien équilibré avec une attention particulière à la qualité du maintien et à la récupération nocturne.",
       mattressAdvice:
         "Nous vous conseillons un matelas adapté à votre morphologie et à vos habitudes de sommeil.",
-      baseAdvice:
-        "Un sommier compatible améliore le confort, la stabilité et la durabilité de votre literie.",
       pillowAdvice:
         "Le choix de l’oreiller joue un rôle essentiel dans l’alignement de la nuque et de la colonne vertébrale.",
     };
@@ -179,10 +164,6 @@ export default function QuizSommeil() {
     {
       title: "Matelas recommandé",
       description: result.mattressAdvice,
-    },
-    {
-      title: "Sommier conseillé",
-      description: result.baseAdvice,
     },
     {
       title: "Oreiller adapté",
@@ -230,7 +211,7 @@ export default function QuizSommeil() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
             {recommendations.map((recommendation) => (
               <article
                 key={recommendation.title}

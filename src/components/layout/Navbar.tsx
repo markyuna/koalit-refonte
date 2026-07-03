@@ -11,7 +11,6 @@ import clsx from "clsx";
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "/matelas", label: "Matelas" },
-  { href: "/sommiers", label: "Sommiers" },
   { href: "/quiz-sommeil", label: "Quiz sommeil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/magasin", label: "Magasin" },

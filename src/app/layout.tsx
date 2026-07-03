@@ -25,12 +25,11 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Découvrez Koa'lit, spécialiste de la literie premium. Matelas, sommiers et conseils personnalisés pour améliorer durablement votre sommeil.",
+    "Découvrez Koa'lit, spécialiste de la literie premium. Matelas et conseils personnalisés pour améliorer durablement votre sommeil.",
 
   keywords: [
     "literie",
     "matelas",
-    "sommier",
     "oreiller",
     "sommeil",
     "literie premium",

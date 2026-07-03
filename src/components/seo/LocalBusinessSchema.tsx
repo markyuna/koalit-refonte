@@ -25,7 +25,7 @@ export default function LocalBusinessSchema() {
     priceRange: "€€€",
 
     description:
-      "Magasin de literie premium à Osny. Matelas, sommiers, oreillers et conseils personnalisés pour améliorer durablement votre sommeil.",
+      "Magasin de literie premium à Osny. Matelas, oreillers et conseils personnalisés pour améliorer durablement votre sommeil.",
   };
 
   return (

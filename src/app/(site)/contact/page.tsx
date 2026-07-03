@@ -60,8 +60,8 @@ export default function ContactPage() {
 
             <p className="mt-5 leading-7 text-white/80">
               Chaque personne dort différemment. Nous vous aidons à identifier
-              le matelas, le sommier ou la solution de literie la plus adaptée à
-              votre morphologie, vos habitudes et vos attentes de confort.
+              le matelas le plus adapté à votre morphologie, vos habitudes et
+              vos attentes de confort.
             </p>
           </article>
         </div>

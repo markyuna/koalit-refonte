@@ -7,9 +7,9 @@ const collections = [
       "Des matelas haut de gamme pensés pour soutenir le corps, améliorer la récupération et offrir un confort durable.",
   },
   {
-    title: "Sommiers élégants",
+    title: "Confort sur-mesure",
     description:
-      "Des sommiers raffinés qui associent stabilité, esthétique et performance pour compléter votre literie.",
+      "Ferme, équilibré ou moelleux : une gamme de matelas pensée pour s'adapter à chaque morphologie et chaque habitude de sommeil.",
   },
   {
     title: "Accessoires sommeil",

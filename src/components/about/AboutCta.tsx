@@ -9,7 +9,7 @@ export default function AboutCta() {
         </h2>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-white/75">
-          Découvrez notre sélection de matelas, sommiers et solutions de sommeil
+          Découvrez notre sélection de matelas et solutions de sommeil
           adaptées à votre confort.
         </p>
 

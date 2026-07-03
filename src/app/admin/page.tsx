@@ -14,7 +14,7 @@ export default function AdminPage() {
           </h1>
 
           <p className="mt-3 max-w-2xl text-slate-600">
-            Gérez vos matelas, sommiers, oreillers et contenus du site
+            Gérez vos matelas, oreillers et contenus du site
             depuis une interface centralisée.
           </p>
         </div>

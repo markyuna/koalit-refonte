@@ -30,7 +30,6 @@ type ProductFormProps = {
 
 const categories = [
   { label: "Matelas", value: "matelas" },
-  { label: "Sommiers", value: "sommiers" },
   { label: "Oreillers", value: "oreillers" },
 ];
 
