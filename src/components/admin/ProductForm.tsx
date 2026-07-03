@@ -26,6 +26,8 @@ type InitialProduct = {
 type ProductFormProps = {
   mode?: "create" | "edit";
   initialProduct?: InitialProduct | null;
+  /** Called right after the product row is created, before redirecting. */
+  onCreated?: (productId: string) => Promise<void>;
 };
 
 const categories = [
@@ -53,6 +55,7 @@ function generateSlug(value: string) {
 export default function ProductForm({
   mode = "create",
   initialProduct = null,
+  onCreated,
 }: ProductFormProps) {
   const router = useRouter();
   const isEditMode = mode === "edit" && initialProduct;
@@ -164,7 +167,11 @@ export default function ProductForm({
         throw error;
       }
 
-      // On redirige vers la fiche pour permettre d'ajouter les images tout de suite.
+      if (onCreated) {
+        await onCreated(created.id);
+      }
+
+      // On redirige vers la fiche pour permettre de poursuivre l'édition.
       router.push(`/admin/products/${created.id}/edit`);
       router.refresh();
     } catch (error) {
