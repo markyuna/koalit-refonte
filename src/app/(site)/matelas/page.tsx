@@ -3,7 +3,6 @@
 import ProductCard, {
   type ProductCardData,
 } from "@/components/product/ProductCard";
-import { getProductAccentColor } from "@/lib/product-brand-colors";
 import { supabase } from "@/lib/supabase";
 
 export default async function MatelasPage() {
@@ -17,6 +16,7 @@ export default async function MatelasPage() {
       short_description,
       price,
       compare_at_price,
+      brand_color,
       is_active,
       categories!inner (
         slug
@@ -40,7 +40,9 @@ export default async function MatelasPage() {
     console.error("Erreur chargement matelas:", error);
   }
 
-  const products = (data ?? []) as unknown as ProductCardData[];
+  const products = (data ?? []) as unknown as (ProductCardData & {
+    brand_color: string | null;
+  })[];
 
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
@@ -82,7 +84,7 @@ export default async function MatelasPage() {
                 key={product.id}
                 product={product}
                 href={`/matelas/${product.slug}`}
-                brandColor={getProductAccentColor(product.slug)}
+                brandColor={product.brand_color}
               />
             ))}
           </div>
