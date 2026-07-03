@@ -1,8 +1,16 @@
 // src/app/(site)/compte/layout.tsx
 
+import type { Metadata } from "next";
+
 import { getCurrentUser } from "@/lib/auth";
 import AccountNav from "@/components/account/AccountNav";
 import SignOutButton from "@/components/account/SignOutButton";
+
+// Private, per-user pages -- keep the entire /compte section out of
+// search results (already disallowed in robots.ts too).
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function CompteLayout({
   children,

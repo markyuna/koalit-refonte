@@ -7,6 +7,7 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 export const metadata: Metadata = {
   title: "Réinitialiser le mot de passe | Koa'lit",
   description: "Choisissez un nouveau mot de passe pour votre compte Koa'lit.",
+  robots: { index: false, follow: false },
 };
 
 export default function ReinitialiserMotDePassePage() {

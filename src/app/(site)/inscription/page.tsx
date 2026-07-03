@@ -7,6 +7,7 @@ import SignUpForm from "@/components/auth/SignUpForm";
 export const metadata: Metadata = {
   title: "Créer un compte | Koa'lit",
   description: "Créez votre compte Koa'lit.",
+  robots: { index: false, follow: false },
 };
 
 export default function InscriptionPage() {

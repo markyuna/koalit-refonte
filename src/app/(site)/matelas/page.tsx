@@ -1,5 +1,7 @@
 // src/app/(site)/matelas/page.tsx
 
+import type { Metadata } from "next";
+
 import ProductCard, {
   type ProductCardData,
 } from "@/components/product/ProductCard";
@@ -9,6 +11,15 @@ import { supabase } from "@/lib/supabase";
 // generates this page at build time and admin changes (new products,
 // price updates, etc.) would never appear until the next deploy.
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Matelas | Koa'lit",
+  description:
+    "Découvrez notre sélection de matelas Koa'lit : Cassiopée, Stella, Lyre, Librea. Un équilibre entre confort, soutien et durabilité pour un sommeil réparateur.",
+  alternates: {
+    canonical: "/matelas",
+  },
+};
 
 export default async function MatelasPage() {
   const { data, error } = await supabase

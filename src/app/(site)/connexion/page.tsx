@@ -8,6 +8,7 @@ import SignInForm from "@/components/auth/SignInForm";
 export const metadata: Metadata = {
   title: "Connexion | Koa'lit",
   description: "Connectez-vous à votre compte Koa'lit.",
+  robots: { index: false, follow: false },
 };
 
 export default function ConnexionPage() {

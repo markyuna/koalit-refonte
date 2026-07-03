@@ -7,6 +7,7 @@ import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 export const metadata: Metadata = {
   title: "Mot de passe oublié | Koa'lit",
   description: "Réinitialisez le mot de passe de votre compte Koa'lit.",
+  robots: { index: false, follow: false },
 };
 
 export default function MotDePasseOubliePage() {
