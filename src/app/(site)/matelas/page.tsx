@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { getProductAccentColor } from "@/lib/product-brand-colors";
 import { supabase } from "@/lib/supabase";
 
 type ProductImage = {
@@ -103,7 +104,7 @@ export default async function MatelasPage() {
 
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20 pt-32">
         <div className="max-w-3xl">
           <span className="inline-flex rounded-full bg-[#d9c45a]/15 px-4 py-2 text-sm font-medium text-[#103a63]">
             Collection Matelas
@@ -135,12 +136,13 @@ export default async function MatelasPage() {
             </div>
           </div>
         ) : (
-          <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-16 grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => {
               const coverImage = getCoverImage(product.product_images);
               const pricing = getDisplayPricing(product);
               const price = formatPrice(pricing.price);
               const compareAtPrice = formatPrice(pricing.compareAtPrice);
+              const accentColor = getProductAccentColor(product.slug);
 
               const hasPromotion =
                 pricing.compareAtPrice !== null &&
@@ -150,7 +152,8 @@ export default async function MatelasPage() {
               return (
                 <article
                   key={product.id}
-                  className="group overflow-hidden rounded-[2rem] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group flex h-full flex-col overflow-hidden rounded-[2rem] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  style={{ backgroundColor: accentColor }}
                 >
                   <Link
                     href={`/matelas/${product.slug}`}
@@ -164,7 +167,7 @@ export default async function MatelasPage() {
                           alt={coverImage.alt ?? product.name}
                           fill
                           className="object-cover transition duration-500 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center px-8 text-center text-slate-400">
@@ -180,28 +183,28 @@ export default async function MatelasPage() {
                     </div>
                   </Link>
 
-                  <div className="p-7">
+                  <div className="flex flex-1 flex-col p-7 text-white">
                     <Link href={`/matelas/${product.slug}`}>
-                      <h2 className="text-2xl font-bold text-[#103a63] transition hover:text-[#d9c45a]">
+                      <h2 className="text-2xl font-bold text-white transition hover:text-[#d9c45a]">
                         {product.name}
                       </h2>
                     </Link>
 
                     {product.short_description && (
-                      <p className="mt-4 line-clamp-3 leading-7 text-slate-600">
+                      <p className="mt-4 line-clamp-3 leading-7 text-white/80">
                         {product.short_description}
                       </p>
                     )}
 
                     <div className="mt-6 flex flex-wrap items-end gap-3">
                       {price && (
-                        <p className="text-3xl font-bold text-[#103a63]">
+                        <p className="text-3xl font-bold text-white">
                           {pricing.fromVariants ? `Dès ${price}` : price}
                         </p>
                       )}
 
                       {compareAtPrice && hasPromotion && (
-                        <p className="pb-1 text-lg text-slate-400 line-through">
+                        <p className="pb-1 text-lg text-white/60 line-through">
                           {compareAtPrice}
                         </p>
                       )}
@@ -209,7 +212,7 @@ export default async function MatelasPage() {
 
                     <Link
                       href={`/matelas/${product.slug}`}
-                      className="mt-7 inline-flex rounded-full bg-[#103a63] px-6 py-3 font-semibold text-white transition hover:bg-[#0b2c4c]"
+                      className="mt-auto inline-flex w-fit rounded-full bg-[#d9c45a] px-6 py-3 font-semibold text-[#103a63] transition hover:bg-[#e6d36f]"
                     >
                       Découvrir
                     </Link>

@@ -67,7 +67,7 @@ export default async function CategoryListingPage({ config }: Props) {
 
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20 pt-32">
         <div className="max-w-3xl">
           <span className="inline-flex rounded-full bg-[#d9c45a]/15 px-4 py-2 text-sm font-medium text-[#103a63]">
             Collection {config.name}
@@ -102,7 +102,7 @@ export default async function CategoryListingPage({ config }: Props) {
             </div>
           </div>
         ) : (
-          <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-16 grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => {
               const coverImage = getCoverImage(product.product_images);
               const pricing = getDisplayPricing(product);
@@ -119,7 +119,7 @@ export default async function CategoryListingPage({ config }: Props) {
               return (
                 <article
                   key={product.id}
-                  className="group overflow-hidden rounded-[2rem] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   <Link
                     href={href}
@@ -133,7 +133,7 @@ export default async function CategoryListingPage({ config }: Props) {
                           alt={coverImage.alt ?? product.name}
                           fill
                           className="object-cover transition duration-500 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center px-8 text-center text-slate-400">
@@ -149,7 +149,7 @@ export default async function CategoryListingPage({ config }: Props) {
                     </div>
                   </Link>
 
-                  <div className="p-7">
+                  <div className="flex flex-1 flex-col p-7">
                     <Link href={href}>
                       <h2 className="text-2xl font-bold text-[#103a63] transition hover:text-[#d9c45a]">
                         {product.name}
@@ -178,7 +178,7 @@ export default async function CategoryListingPage({ config }: Props) {
 
                     <Link
                       href={href}
-                      className="mt-7 inline-flex rounded-full bg-[#103a63] px-6 py-3 font-semibold text-white transition hover:bg-[#0b2c4c]"
+                      className="mt-auto inline-flex w-fit rounded-full bg-[#103a63] px-6 py-3 font-semibold text-white transition hover:bg-[#0b2c4c]"
                     >
                       Découvrir
                     </Link>

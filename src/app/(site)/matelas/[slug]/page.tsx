@@ -125,7 +125,7 @@ export default async function MatelasDetailPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
-      <section className="mx-auto max-w-7xl px-5 py-8 sm:px-6 md:py-12 lg:py-16">
+      <section className="mx-auto max-w-7xl px-5 pb-8 pt-28 sm:px-6 sm:pt-32 md:pb-12 lg:pb-16">
         <Link
           href="/matelas"
           className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-[#103a63] shadow-sm transition hover:bg-white hover:text-[#d9c45a]"
