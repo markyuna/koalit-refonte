@@ -13,6 +13,7 @@ import { useState } from "react";
 import clsx from "clsx";
 
 import { useCart } from "@/lib/cart-context";
+import { formatPrice } from "@/lib/product-helpers";
 
 type Variant = {
   id: string;
@@ -30,15 +31,6 @@ type Props = {
   href: string;
   imageUrl: string | null;
 };
-
-function formatPrice(price: number | null) {
-  if (price === null) return null;
-
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-  }).format(price);
-}
 
 export default function ProductPurchasePanel({
   variants,
