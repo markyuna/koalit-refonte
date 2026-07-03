@@ -68,10 +68,10 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt=""
-            width={160}
-            height={120}
+            width={788}
+            height={250}
             priority
-            className="h-14 w-auto sm:h-16"
+            className="h-10 w-auto sm:h-12"
           />
         </Link>
 
