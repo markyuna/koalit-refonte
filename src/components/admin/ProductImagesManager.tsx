@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { ImagePlus, Star, Trash2 } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
+import { PRODUCT_IMAGES_BUCKET, getStoragePathFromPublicUrl } from "@/lib/storage";
 
 type ProductImage = {
   id: string;
@@ -23,7 +24,12 @@ type Props = {
   images: ProductImage[];
 };
 
-const BUCKET_NAME = "product-images";
+const BUCKET_NAME = PRODUCT_IMAGES_BUCKET;
+const MAX_FILE_SIZE_BYTES = 8 * 1024 * 1024;
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : null;
+}
 
 export default function ProductImagesManager({
   productId,
@@ -34,16 +40,17 @@ export default function ProductImagesManager({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  const getStoragePathFromPublicUrl = (url: string) => {
-    const marker = `/storage/v1/object/public/${BUCKET_NAME}/`;
-    const index = url.indexOf(marker);
-
-    if (index === -1) return null;
-
-    return decodeURIComponent(url.slice(index + marker.length));
-  };
-
   const handleUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Le fichier doit être une image.");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      alert("L’image dépasse la taille maximale autorisée (8 Mo).");
+      return;
+    }
+
     try {
       setUploading(true);
 
@@ -54,6 +61,7 @@ export default function ProductImagesManager({
         .from(BUCKET_NAME)
         .upload(filePath, file, {
           cacheControl: "3600",
+          contentType: file.type,
           upsert: false,
         });
 
@@ -82,7 +90,13 @@ export default function ProductImagesManager({
       router.refresh();
     } catch (error) {
       console.error("Erreur upload image:", error);
-      alert("Erreur lors de l’ajout de l’image.");
+
+      const message = getErrorMessage(error);
+      alert(
+        message
+          ? `Erreur lors de l’ajout de l’image : ${message}`
+          : "Erreur lors de l’ajout de l’image."
+      );
     } finally {
       setUploading(false);
 
@@ -94,24 +108,35 @@ export default function ProductImagesManager({
 
   const handleSetCover = async (imageId: string) => {
     try {
-      await supabase
-        .from("product_images")
-        .update({ is_cover: false })
-        .eq("product_id", productId);
-
-      const { error } = await supabase
+      const { error: setCoverError } = await supabase
         .from("product_images")
         .update({ is_cover: true })
         .eq("id", imageId);
 
-      if (error) {
-        throw error;
+      if (setCoverError) {
+        throw setCoverError;
+      }
+
+      const { error: clearOthersError } = await supabase
+        .from("product_images")
+        .update({ is_cover: false })
+        .eq("product_id", productId)
+        .neq("id", imageId);
+
+      if (clearOthersError) {
+        throw clearOthersError;
       }
 
       router.refresh();
     } catch (error) {
       console.error("Erreur image principale:", error);
-      alert("Erreur lors de la sélection de l’image principale.");
+
+      const message = getErrorMessage(error);
+      alert(
+        message
+          ? `Erreur lors de la sélection de l’image principale : ${message}`
+          : "Erreur lors de la sélection de l’image principale."
+      );
     }
   };
 
@@ -139,7 +164,13 @@ export default function ProductImagesManager({
       router.refresh();
     } catch (error) {
       console.error("Erreur suppression image:", error);
-      alert("Erreur lors de la suppression de l’image.");
+
+      const message = getErrorMessage(error);
+      alert(
+        message
+          ? `Erreur lors de la suppression de l’image : ${message}`
+          : "Erreur lors de la suppression de l’image."
+      );
     }
   };
 

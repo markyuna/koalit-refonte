@@ -136,22 +136,47 @@ export default function ProductForm({
         is_active: formData.is_active,
       };
 
-      const { error } = isEditMode
-        ? await supabase
-            .from("products")
-            .update(productPayload)
-            .eq("id", initialProduct.id)
-        : await supabase.from("products").insert(productPayload);
+      if (isEditMode) {
+        const { error } = await supabase
+          .from("products")
+          .update(productPayload)
+          .eq("id", initialProduct.id);
+
+        if (error) {
+          throw error;
+        }
+
+        router.push("/admin/products");
+        router.refresh();
+        return;
+      }
+
+      const { data: created, error } = await supabase
+        .from("products")
+        .insert(productPayload)
+        .select("id")
+        .single();
 
       if (error) {
         throw error;
       }
 
-      router.push("/admin/products");
+      // On redirige vers la fiche pour permettre d'ajouter les images tout de suite.
+      router.push(`/admin/products/${created.id}/edit`);
       router.refresh();
     } catch (error) {
       console.error("Erreur sauvegarde produit:", error);
-      alert("Erreur lors de la sauvegarde du produit.");
+
+      const message =
+        error instanceof Error && "message" in error
+          ? (error as { message?: string }).message
+          : null;
+
+      alert(
+        message
+          ? `Erreur lors de la sauvegarde du produit : ${message}`
+          : "Erreur lors de la sauvegarde du produit."
+      );
     } finally {
       setLoading(false);
     }
