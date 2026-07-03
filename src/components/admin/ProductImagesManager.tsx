@@ -10,6 +10,7 @@ import clsx from "clsx";
 
 import { supabase } from "@/lib/supabase";
 import { PRODUCT_IMAGES_BUCKET, getStoragePathFromPublicUrl } from "@/lib/storage";
+import { uploadProductImage } from "@/lib/product-images";
 
 type ProductImage = {
   id: string;
@@ -26,7 +27,6 @@ type Props = {
 };
 
 const BUCKET_NAME = PRODUCT_IMAGES_BUCKET;
-const MAX_FILE_SIZE_BYTES = 8 * 1024 * 1024;
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : null;
@@ -56,44 +56,14 @@ export default function ProductImagesManager({
     setOrderedImages(images);
   }
 
-  const uploadOne = async (file: File, index: number) => {
-    if (!file.type.startsWith("image/")) {
-      throw new Error(`${file.name} : le fichier doit être une image.`);
-    }
-
-    if (file.size > MAX_FILE_SIZE_BYTES) {
-      throw new Error(`${file.name} : dépasse la taille maximale (8 Mo).`);
-    }
-
-    const extension = file.name.split(".").pop() || "webp";
-    const filePath = `${productSlug}/${Date.now()}-${index}.${extension}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from(BUCKET_NAME)
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        contentType: file.type,
-        upsert: false,
-      });
-
-    if (uploadError) {
-      throw uploadError;
-    }
-
-    const { data } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
-
-    const { error: insertError } = await supabase.from("product_images").insert({
-      product_id: productId,
-      image_url: data.publicUrl,
-      alt: productSlug,
-      is_cover: images.length === 0 && index === 0,
-      position: images.length + index,
+  const uploadOne = (file: File, index: number) =>
+    uploadProductImage({
+      file,
+      productId,
+      folderKey: productSlug,
+      index: images.length + index,
+      isCover: images.length === 0 && index === 0,
     });
-
-    if (insertError) {
-      throw insertError;
-    }
-  };
 
   const handleUpload = async (files: File[]) => {
     if (files.length === 0) return;
@@ -246,15 +216,14 @@ export default function ProductImagesManager({
   };
 
   return (
-    <div className="mt-10 rounded-[2rem] bg-white p-8 shadow-sm">
-      <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+    <div className="rounded-[2rem] bg-white p-5 shadow-sm">
+      <div className="mb-4 flex flex-col gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-[#103a63]">
+          <h2 className="text-lg font-bold text-[#103a63]">
             Images du produit
           </h2>
-          <p className="mt-2 text-slate-600">
-            Ajoutez les visuels du produit (plusieurs à la fois) et
-            glissez-déposez les vignettes pour changer leur ordre.
+          <p className="mt-1 text-xs text-slate-500">
+            Glissez-déposez les vignettes pour changer leur ordre.
           </p>
         </div>
 
@@ -275,9 +244,9 @@ export default function ProductImagesManager({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="inline-flex items-center gap-2 rounded-full bg-[#103a63] px-6 py-3 font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#103a63] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
           >
-            <ImagePlus className="h-5 w-5" />
+            <ImagePlus className="h-4 w-4" />
             {uploading
               ? `Upload ${uploadProgress?.done ?? 0}/${uploadProgress?.total ?? 0}...`
               : "Ajouter des images"}
@@ -286,13 +255,13 @@ export default function ProductImagesManager({
       </div>
 
       {orderedImages.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-slate-200 p-10 text-center text-slate-500">
+        <div className="rounded-2xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-500">
           Aucune image ajoutée pour ce produit.
         </div>
       ) : (
         <div
           className={clsx(
-            "grid gap-5 sm:grid-cols-2 lg:grid-cols-3",
+            "grid grid-cols-3 gap-2",
             reordering && "opacity-60"
           )}
         >
@@ -317,7 +286,7 @@ export default function ProductImagesManager({
                 setDragOverId(null);
               }}
               className={clsx(
-                "overflow-hidden rounded-3xl border bg-[#f8f6f1] transition",
+                "overflow-hidden rounded-2xl border bg-[#f8f6f1] transition",
                 draggedId === image.id
                   ? "border-slate-200 opacity-40"
                   : dragOverId === image.id
@@ -325,44 +294,46 @@ export default function ProductImagesManager({
                     : "border-slate-100"
               )}
             >
-              <div className="relative aspect-[4/3] cursor-grab bg-white active:cursor-grabbing">
+              <div className="relative aspect-square cursor-grab bg-white active:cursor-grabbing">
                 <Image
                   src={image.image_url}
                   alt={image.alt ?? productSlug}
                   fill
                   draggable={false}
                   className="pointer-events-none object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 50vw, 200px"
                 />
 
-                <span className="absolute right-3 top-3 inline-flex items-center justify-center rounded-full bg-white/90 p-1.5 text-[#103a63] shadow-sm">
-                  <GripVertical className="h-4 w-4" />
+                <span className="absolute right-1 top-1 inline-flex items-center justify-center rounded-full bg-white/90 p-0.5 text-[#103a63] shadow-sm">
+                  <GripVertical className="h-2.5 w-2.5" />
                 </span>
 
                 {image.is_cover && (
-                  <span className="absolute left-3 top-3 rounded-full bg-[#d9c45a] px-3 py-1 text-xs font-bold text-[#103a63]">
-                    Image principale
+                  <span className="absolute left-1 top-1 rounded-full bg-[#d9c45a] p-0.5 text-[#103a63] shadow-sm">
+                    <Star className="h-2.5 w-2.5" fill="currentColor" />
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center justify-between gap-3 p-4">
+              <div className="flex items-center justify-center gap-1 border-t border-slate-100 py-1">
                 <button
                   type="button"
                   onClick={() => handleSetCover(image.id)}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#103a63]"
+                  title="Définir comme image principale"
+                  aria-label="Définir comme image principale"
+                  className="inline-flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white text-[#103a63] transition hover:bg-[#103a63] hover:text-white"
                 >
-                  <Star className="h-4 w-4" />
-                  Définir
+                  <Star className="h-3 w-3" />
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleDelete(image)}
-                  className="inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-sm font-semibold text-red-600"
+                  title="Supprimer"
+                  aria-label="Supprimer"
+                  className="inline-flex h-[22px] w-[22px] items-center justify-center rounded-full bg-red-50 text-red-600 transition hover:bg-red-600 hover:text-white"
                 >
-                  <Trash2 className="h-4 w-4" />
-                  Supprimer
+                  <Trash2 className="h-3 w-3" />
                 </button>
               </div>
             </article>

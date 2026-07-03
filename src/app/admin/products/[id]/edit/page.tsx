@@ -126,23 +126,29 @@ export default async function EditProductPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-[#f8f6f1]">
-      <section className="mx-auto max-w-5xl px-6 py-16">
+      <section className="mx-auto max-w-7xl px-6 py-16">
         <h1 className="mb-8 text-4xl font-bold text-[#103a63]">
           Modifier le produit
         </h1>
 
-        <ProductForm mode="edit" initialProduct={initialProduct} />
+        <div className="grid gap-8 lg:grid-cols-[1.7fr_1fr] lg:items-start">
+          <div className="min-w-0">
+            <ProductForm mode="edit" initialProduct={initialProduct} />
 
-        <ProductVariantsManager
-          productId={typedProduct.id}
-          variants={typedProduct.product_variants ?? []}
-        />
+            <ProductVariantsManager
+              productId={typedProduct.id}
+              variants={typedProduct.product_variants ?? []}
+            />
+          </div>
 
-        <ProductImagesManager
-          productId={typedProduct.id}
-          productSlug={typedProduct.slug}
-          images={typedProduct.product_images ?? []}
-        />
+          <div className="min-w-0 lg:sticky lg:top-8">
+            <ProductImagesManager
+              productId={typedProduct.id}
+              productSlug={typedProduct.slug}
+              images={typedProduct.product_images ?? []}
+            />
+          </div>
+        </div>
       </section>
     </main>
   );
