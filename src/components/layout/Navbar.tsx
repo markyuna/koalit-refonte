@@ -5,15 +5,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, User, X } from "lucide-react";
 import clsx from "clsx";
 
 import { boutiqueLinks } from "@/lib/nav-links";
+import { createClient } from "@/lib/supabase-browser";
 
 const navLinks = [
   { href: "/quiz-sommeil", label: "Quiz sommeil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/magasin", label: "Magasin" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -24,9 +26,24 @@ export default function Navbar() {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [boutiqueOpen, setBoutiqueOpen] = useState(false);
   const [mobileBoutiqueOpen, setMobileBoutiqueOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const boutiqueRef = useRef<HTMLDivElement | null>(null);
   const boutiqueTriggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth.getSession().then(({ data }) => {
+      setIsLoggedIn(!!data.session);
+    });
+
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => subscription.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -216,7 +233,15 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-3 lg:flex">
+          <Link
+            href={isLoggedIn ? "/compte" : "/connexion"}
+            aria-label={isLoggedIn ? "Mon compte" : "Connexion"}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/60 text-[var(--koalit-blue)] backdrop-blur-xl transition hover:bg-[var(--koalit-blue)] hover:text-white"
+          >
+            <User className="h-5 w-5" />
+          </Link>
+
           <Link
             href="/contact"
             className="rounded-full bg-[var(--koalit-gold)] px-6 py-3 text-sm font-bold text-[var(--koalit-blue-dark)] shadow-[0_14px_40px_rgba(217,196,90,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--koalit-gold-hover)]"
@@ -304,6 +329,15 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          <Link
+            href={isLoggedIn ? "/compte" : "/connexion"}
+            onClick={closeMenu}
+            className="flex items-center gap-2 rounded-2xl px-5 py-4 text-lg font-semibold text-[var(--koalit-blue)] transition hover:bg-[var(--koalit-blue-soft)]"
+          >
+            <User className="h-5 w-5" />
+            {isLoggedIn ? "Mon compte" : "Connexion"}
+          </Link>
 
           <Link
             href="/contact"

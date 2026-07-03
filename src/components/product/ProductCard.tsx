@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 import type { CSSProperties } from "react";
 
 import {
@@ -127,6 +128,21 @@ export default function ProductCard({ product, href, brandColor }: Props) {
               Découvrir
             </Link>
           )}
+
+          <button
+            type="button"
+            disabled
+            title="Bientôt disponible"
+            className={clsx(
+              "mt-2 flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-full px-5 py-2 text-[11px] font-medium uppercase tracking-[0.12em] opacity-60",
+              isBranded
+                ? "bg-white/10 text-white"
+                : "bg-slate-100 text-slate-400"
+            )}
+          >
+            <ShoppingCart className="h-3.5 w-3.5" />
+            Ajouter au panier
+          </button>
         </div>
       </div>
     </article>
