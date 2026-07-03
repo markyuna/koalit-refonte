@@ -9,6 +9,7 @@ import clsx from "clsx";
 const links = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/products", label: "Produits" },
+  { href: "/admin/commandes", label: "Commandes" },
 ];
 
 export default function AdminNavbar() {

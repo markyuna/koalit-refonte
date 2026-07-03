@@ -5,11 +5,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { ChevronDown, Menu, User, X } from "lucide-react";
+import { ChevronDown, Menu, ShoppingBag, User, X } from "lucide-react";
 import clsx from "clsx";
 
 import { boutiqueLinks } from "@/lib/nav-links";
 import { createClient } from "@/lib/supabase-browser";
+import { useCart } from "@/lib/cart-context";
 
 const navLinks = [
   { href: "/quiz-sommeil", label: "Quiz sommeil" },
@@ -27,6 +28,7 @@ export default function Navbar() {
   const [boutiqueOpen, setBoutiqueOpen] = useState(false);
   const [mobileBoutiqueOpen, setMobileBoutiqueOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { totalItems } = useCart();
 
   const boutiqueRef = useRef<HTMLDivElement | null>(null);
   const boutiqueTriggerRef = useRef<HTMLButtonElement | null>(null);
@@ -235,6 +237,19 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <Link
+            href="/panier"
+            aria-label="Panier"
+            className="relative inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/60 text-[var(--koalit-blue)] backdrop-blur-xl transition hover:bg-[var(--koalit-blue)] hover:text-white"
+          >
+            <ShoppingBag className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--koalit-gold)] text-[11px] font-bold text-[var(--koalit-blue-dark)]">
+                {totalItems}
+              </span>
+            )}
+          </Link>
+
+          <Link
             href={isLoggedIn ? "/compte" : "/connexion"}
             aria-label={isLoggedIn ? "Mon compte" : "Connexion"}
             className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/60 text-[var(--koalit-blue)] backdrop-blur-xl transition hover:bg-[var(--koalit-blue)] hover:text-white"
@@ -329,6 +344,20 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          <Link
+            href="/panier"
+            onClick={closeMenu}
+            className="flex items-center gap-2 rounded-2xl px-5 py-4 text-lg font-semibold text-[var(--koalit-blue)] transition hover:bg-[var(--koalit-blue-soft)]"
+          >
+            <ShoppingBag className="h-5 w-5" />
+            Panier
+            {totalItems > 0 && (
+              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--koalit-gold)] text-[11px] font-bold text-[var(--koalit-blue-dark)]">
+                {totalItems}
+              </span>
+            )}
+          </Link>
 
           <Link
             href={isLoggedIn ? "/compte" : "/connexion"}

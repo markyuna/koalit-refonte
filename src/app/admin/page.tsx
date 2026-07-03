@@ -43,15 +43,18 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div className="rounded-[2rem] border border-white bg-white p-8 opacity-70 shadow-sm">
+          <Link
+            href="/admin/commandes"
+            className="rounded-[2rem] border border-white bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+          >
             <h2 className="text-xl font-bold text-[#103a63]">
-              Réservations
+              Commandes
             </h2>
 
             <p className="mt-3 text-slate-600">
-              Gestion des demandes d&apos;essai et contacts.
+              Consulter les commandes passées par les clients.
             </p>
-          </div>
+          </Link>
         </div>
       </section>
     </main>
