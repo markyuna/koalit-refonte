@@ -2,6 +2,7 @@
 
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -61,10 +62,17 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={closeMenu}
-          className="relative z-50 text-xl font-black tracking-tight text-[var(--koalit-blue)] transition hover:text-[var(--koalit-blue-dark)]"
+          className="relative z-50 flex items-center transition hover:opacity-80"
           aria-label="Retour à l’accueil Koa’lit"
         >
-          Koa&apos;lit
+          <Image
+            src="/logo.png"
+            alt=""
+            width={160}
+            height={120}
+            priority
+            className="h-14 w-auto sm:h-16"
+          />
         </Link>
 
         <nav
