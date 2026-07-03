@@ -15,12 +15,20 @@ import {
   Truck,
 } from "lucide-react";
 
+import SizeSelector from "@/components/product/SizeSelector";
 import { supabase } from "@/lib/supabase";
 
 type ProductImage = {
   image_url: string;
   alt: string | null;
   is_cover: boolean | null;
+};
+
+type ProductVariant = {
+  id: string;
+  dimension: string;
+  price: number;
+  compare_at_price: number | null;
 };
 
 type Product = {
@@ -33,6 +41,7 @@ type Product = {
   compare_at_price: number | null;
   is_active: boolean | null;
   product_images: ProductImage[] | null;
+  product_variants: ProductVariant[] | null;
 };
 
 type Props = {
@@ -40,15 +49,6 @@ type Props = {
     slug: string;
   }>;
 };
-
-function formatPrice(price: number | null) {
-  if (price === null) return null;
-
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-  }).format(price);
-}
 
 function getCoverImage(images: ProductImage[] | null) {
   if (!images || images.length === 0) return null;
@@ -90,6 +90,12 @@ export default async function SommierDetailPage({ params }: Props) {
         image_url,
         alt,
         is_cover
+      ),
+      product_variants (
+        id,
+        dimension,
+        price,
+        compare_at_price
       )
     `
     )
@@ -108,18 +114,16 @@ export default async function SommierDetailPage({ params }: Props) {
   const images = getGalleryImages(product.product_images);
   const coverImage = getCoverImage(product.product_images);
 
-  const price = formatPrice(product.price);
-  const compareAtPrice = formatPrice(product.compare_at_price);
+  const variants = product.product_variants ?? [];
+  const sortedVariants = [...variants].sort((a, b) => a.price - b.price);
+  const primaryPrice = sortedVariants[0]?.price ?? product.price;
+  const primaryCompareAtPrice =
+    sortedVariants[0]?.compare_at_price ?? product.compare_at_price;
 
   const hasPromotion =
-    product.compare_at_price !== null &&
-    product.price !== null &&
-    product.compare_at_price > product.price;
-
-  const savings =
-    hasPromotion && product.compare_at_price && product.price
-      ? formatPrice(product.compare_at_price - product.price)
-      : null;
+    primaryCompareAtPrice !== null &&
+    primaryPrice !== null &&
+    primaryCompareAtPrice > primaryPrice;
 
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
@@ -201,27 +205,11 @@ export default async function SommierDetailPage({ params }: Props) {
               </p>
             )}
 
-            <div className="mt-8 rounded-[1.75rem] bg-[#F8F5F0] p-5">
-              <div className="flex flex-wrap items-end gap-4">
-                {price && (
-                  <p className="text-4xl font-bold tracking-tight text-[#103a63]">
-                    {price}
-                  </p>
-                )}
-
-                {compareAtPrice && hasPromotion && (
-                  <p className="pb-1 text-xl font-medium text-slate-400 line-through">
-                    {compareAtPrice}
-                  </p>
-                )}
-              </div>
-
-              {savings && (
-                <p className="mt-3 inline-flex rounded-full bg-red-50 px-4 py-2 text-sm font-bold text-red-600">
-                  Vous économisez {savings}
-                </p>
-              )}
-            </div>
+            <SizeSelector
+              variants={sortedVariants}
+              fallbackPrice={product.price}
+              fallbackCompareAtPrice={product.compare_at_price}
+            />
 
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-[#103a63]/10 p-4">

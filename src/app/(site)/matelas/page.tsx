@@ -11,6 +11,11 @@ type ProductImage = {
   is_cover: boolean | null;
 };
 
+type ProductVariant = {
+  price: number;
+  compare_at_price: number | null;
+};
+
 type Product = {
   id: string;
   name: string;
@@ -20,6 +25,7 @@ type Product = {
   compare_at_price: number | null;
   is_active: boolean | null;
   product_images: ProductImage[] | null;
+  product_variants: ProductVariant[] | null;
 };
 
 function formatPrice(price: number | null) {
@@ -35,6 +41,28 @@ function getCoverImage(images: ProductImage[] | null) {
   if (!images || images.length === 0) return null;
 
   return images.find((image) => image.is_cover) ?? images[0];
+}
+
+function getDisplayPricing(product: Product) {
+  const variants = product.product_variants ?? [];
+
+  if (variants.length === 0) {
+    return {
+      price: product.price,
+      compareAtPrice: product.compare_at_price,
+      fromVariants: false,
+    };
+  }
+
+  const cheapest = variants.reduce((lowest, variant) =>
+    variant.price < lowest.price ? variant : lowest
+  );
+
+  return {
+    price: cheapest.price,
+    compareAtPrice: cheapest.compare_at_price,
+    fromVariants: true,
+  };
 }
 
 export default async function MatelasPage() {
@@ -56,6 +84,10 @@ export default async function MatelasPage() {
         image_url,
         alt,
         is_cover
+      ),
+      product_variants (
+        price,
+        compare_at_price
       )
     `
     )
@@ -106,13 +138,14 @@ export default async function MatelasPage() {
           <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {products.map((product) => {
               const coverImage = getCoverImage(product.product_images);
-              const price = formatPrice(product.price);
-              const compareAtPrice = formatPrice(product.compare_at_price);
+              const pricing = getDisplayPricing(product);
+              const price = formatPrice(pricing.price);
+              const compareAtPrice = formatPrice(pricing.compareAtPrice);
 
               const hasPromotion =
-                product.compare_at_price !== null &&
-                product.price !== null &&
-                product.compare_at_price > product.price;
+                pricing.compareAtPrice !== null &&
+                pricing.price !== null &&
+                pricing.compareAtPrice > pricing.price;
 
               return (
                 <article
@@ -163,7 +196,7 @@ export default async function MatelasPage() {
                     <div className="mt-6 flex flex-wrap items-end gap-3">
                       {price && (
                         <p className="text-3xl font-bold text-[#103a63]">
-                          {price}
+                          {pricing.fromVariants ? `Dès ${price}` : price}
                         </p>
                       )}
 

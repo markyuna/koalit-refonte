@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import ProductForm from "@/components/admin/ProductForm";
 import ProductImagesManager from "@/components/admin/ProductImagesManager";
+import ProductVariantsManager from "@/components/admin/ProductVariantsManager";
 import { supabase } from "@/lib/supabase";
 
 type ProductImage = {
@@ -11,6 +12,14 @@ type ProductImage = {
   image_url: string;
   alt: string | null;
   is_cover: boolean | null;
+  position: number | null;
+};
+
+type ProductVariant = {
+  id: string;
+  dimension: string;
+  price: number;
+  compare_at_price: number | null;
   position: number | null;
 };
 
@@ -36,6 +45,7 @@ type Product = {
   is_active: boolean | null;
   categories: ProductCategory;
   product_images: ProductImage[] | null;
+  product_variants: ProductVariant[] | null;
 };
 
 type InitialProduct = Omit<Product, "categories"> & {
@@ -82,12 +92,23 @@ export default async function EditProductPage({ params }: Props) {
         alt,
         is_cover,
         position
+      ),
+      product_variants (
+        id,
+        dimension,
+        price,
+        compare_at_price,
+        position
       )
     `
     )
     .eq("id", id)
     .order("position", {
       referencedTable: "product_images",
+      ascending: true,
+    })
+    .order("position", {
+      referencedTable: "product_variants",
       ascending: true,
     })
     .maybeSingle();
@@ -111,6 +132,11 @@ export default async function EditProductPage({ params }: Props) {
         </h1>
 
         <ProductForm mode="edit" initialProduct={initialProduct} />
+
+        <ProductVariantsManager
+          productId={typedProduct.id}
+          variants={typedProduct.product_variants ?? []}
+        />
 
         <ProductImagesManager
           productId={typedProduct.id}

@@ -16,6 +16,10 @@ type Category =
     }[]
   | null;
 
+type Variant = {
+  price: number;
+};
+
 type Product = {
   id: string;
   name: string;
@@ -26,6 +30,7 @@ type Product = {
   is_active: boolean | null;
   is_featured: boolean | null;
   categories: Category;
+  product_variants: Variant[] | null;
 };
 
 function getCategoryName(category: Category) {
@@ -34,6 +39,18 @@ function getCategoryName(category: Category) {
   }
 
   return category?.name ?? "Sans catégorie";
+}
+
+function getDisplayPrice(product: Product) {
+  const variants = product.product_variants ?? [];
+
+  if (variants.length === 0) {
+    return { price: product.price, fromVariants: false };
+  }
+
+  const cheapest = Math.min(...variants.map((variant) => variant.price));
+
+  return { price: cheapest, fromVariants: true };
 }
 
 export default async function AdminProductsPage() {
@@ -52,6 +69,9 @@ export default async function AdminProductsPage() {
       categories (
         name,
         slug
+      ),
+      product_variants (
+        price
       )
     `
     )
@@ -109,7 +129,10 @@ export default async function AdminProductsPage() {
                 </thead>
 
                 <tbody>
-                  {products.map((product) => (
+                  {products.map((product) => {
+                    const { price, fromVariants } = getDisplayPrice(product);
+
+                    return (
                     <tr
                       key={product.id}
                       className="border-b border-slate-100 last:border-b-0"
@@ -129,10 +152,12 @@ export default async function AdminProductsPage() {
 
                       <td className="px-6 py-5">
                         <p className="font-semibold text-[#103a63]">
-                          {product.price ? `${product.price} €` : "-"}
+                          {price
+                            ? `${fromVariants ? "Dès " : ""}${price} €`
+                            : "-"}
                         </p>
 
-                        {product.compare_at_price && (
+                        {!fromVariants && product.compare_at_price && (
                           <p className="text-sm text-slate-400 line-through">
                             {product.compare_at_price} €
                           </p>
@@ -172,7 +197,8 @@ export default async function AdminProductsPage() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
