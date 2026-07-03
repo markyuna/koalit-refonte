@@ -1,6 +1,5 @@
 // src/app/(site)/matelas/[slug]/page.tsx
 
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -15,6 +14,7 @@ import {
   Truck,
 } from "lucide-react";
 
+import ProductGallery from "@/components/product/ProductGallery";
 import SizeSelector from "@/components/product/SizeSelector";
 import { supabase } from "@/lib/supabase";
 
@@ -112,7 +112,6 @@ export default async function MatelasDetailPage({ params }: Props) {
   const product = data as unknown as Product;
 
   const images = getGalleryImages(product.product_images);
-  const coverImage = getCoverImage(product.product_images);
 
   const variants = product.product_variants ?? [];
   const sortedVariants = [...variants].sort((a, b) => a.price - b.price);
@@ -137,57 +136,12 @@ export default async function MatelasDetailPage({ params }: Props) {
         </Link>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-          <section className="space-y-5">
-            <div className="relative overflow-hidden rounded-[2rem] bg-[#efe8db] shadow-sm sm:rounded-[2.5rem]">
-              <div className="relative aspect-[4/3]">
-                {coverImage ? (
-                  <Image
-                    src={coverImage.image_url}
-                    alt={coverImage.alt ?? product.name}
-                    fill
-                    priority
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 58vw"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center px-8 text-center text-slate-400">
-                    Image en préparation
-                  </div>
-                )}
-              </div>
-
-              <div className="absolute left-5 top-5 flex flex-wrap gap-3">
-                {hasPromotion && (
-                  <span className="rounded-full bg-red-600 px-5 py-2 text-sm font-bold text-white shadow-lg">
-                    Promo
-                  </span>
-                )}
-
-                <span className="rounded-full bg-white/90 px-5 py-2 text-sm font-semibold text-[#103a63] shadow-lg backdrop-blur">
-                  Collection Matelas
-                </span>
-              </div>
-            </div>
-
-            {images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3 sm:gap-4">
-                {images.slice(0, 4).map((image, index) => (
-                  <div
-                    key={`${image.image_url}-${index}`}
-                    className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#103a63]/5 transition hover:-translate-y-0.5 hover:shadow-md"
-                  >
-                    <Image
-                      src={image.image_url}
-                      alt={image.alt ?? `${product.name} image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 25vw, 160px"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
+          <ProductGallery
+            images={images}
+            productName={product.name}
+            hasPromotion={hasPromotion}
+            badgeLabel="Collection Matelas"
+          />
 
           <aside className="rounded-[2rem] bg-white p-6 shadow-sm sm:rounded-[2.5rem] sm:p-8 lg:sticky lg:top-8 lg:p-10">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#d9c45a]/15 px-4 py-2 text-sm font-semibold text-[#103a63]">
