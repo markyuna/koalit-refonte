@@ -4,6 +4,10 @@ import { createAdminClient } from "@/lib/supabase-admin";
 import { formatPrice } from "@/lib/product-helpers";
 import DeleteOrderButton from "@/components/admin/DeleteOrderButton";
 
+// Always fetch fresh orders -- without this, admins would never see
+// new orders placed by customers until the next deploy.
+export const dynamic = "force-dynamic";
+
 type OrderItem = {
   id: string;
   product_name: string;

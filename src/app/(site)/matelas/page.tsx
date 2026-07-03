@@ -5,6 +5,11 @@ import ProductCard, {
 } from "@/components/product/ProductCard";
 import { supabase } from "@/lib/supabase";
 
+// Always fetch fresh product data -- without this, Next.js statically
+// generates this page at build time and admin changes (new products,
+// price updates, etc.) would never appear until the next deploy.
+export const dynamic = "force-dynamic";
+
 export default async function MatelasPage() {
   const { data, error } = await supabase
     .from("products")

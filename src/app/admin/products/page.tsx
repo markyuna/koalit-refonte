@@ -5,6 +5,9 @@ import Link from "next/link";
 import DeleteProductButton from "@/components/admin/DeleteProductButton";
 import { supabase } from "@/lib/supabase";
 
+// Always fetch fresh product data -- see (site)/matelas/page.tsx for why.
+export const dynamic = "force-dynamic";
+
 type Category =
   | {
       name: string;

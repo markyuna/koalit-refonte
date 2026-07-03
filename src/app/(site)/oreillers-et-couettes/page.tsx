@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description: config.seoDescription,
 };
 
+// Always fetch fresh product data -- see matelas/page.tsx for why.
+export const dynamic = "force-dynamic";
+
 export default function OreillersEtCouettesPage() {
   return <CategoryListingPage config={config} />;
 }
