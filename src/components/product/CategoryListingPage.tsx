@@ -1,29 +1,10 @@
 // src/components/product/CategoryListingPage.tsx
 
-import Image from "next/image";
 import Link from "next/link";
 
 import type { CategoryConfig } from "@/lib/categories";
-import {
-  formatPrice,
-  getCoverImage,
-  getDisplayPricing,
-  type ProductImage,
-  type ProductVariant,
-} from "@/lib/product-helpers";
+import ProductCard, { type ProductCardData } from "@/components/product/ProductCard";
 import { supabase } from "@/lib/supabase";
-
-type Product = {
-  id: string;
-  name: string;
-  slug: string;
-  short_description: string | null;
-  price: number | null;
-  compare_at_price: number | null;
-  is_active: boolean | null;
-  product_images: ProductImage[] | null;
-  product_variants: ProductVariant[] | null;
-};
 
 type Props = {
   config: CategoryConfig;
@@ -63,7 +44,7 @@ export default async function CategoryListingPage({ config }: Props) {
     console.error(`Erreur chargement ${config.slug}:`, error);
   }
 
-  const products = (data ?? []) as unknown as Product[];
+  const products = (data ?? []) as unknown as ProductCardData[];
 
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
@@ -103,89 +84,13 @@ export default async function CategoryListingPage({ config }: Props) {
           </div>
         ) : (
           <div className="mt-16 grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {products.map((product) => {
-              const coverImage = getCoverImage(product.product_images);
-              const pricing = getDisplayPricing(product);
-              const price = formatPrice(pricing.price);
-              const compareAtPrice = formatPrice(pricing.compareAtPrice);
-
-              const hasPromotion =
-                pricing.compareAtPrice !== null &&
-                pricing.price !== null &&
-                pricing.compareAtPrice > pricing.price;
-
-              const href = `${config.routeBase}/${product.slug}`;
-
-              return (
-                <article
-                  key={product.id}
-                  className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <Link
-                    href={href}
-                    className="block"
-                    aria-label={`Découvrir ${product.name}`}
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden bg-[#efe8db]">
-                      {coverImage ? (
-                        <Image
-                          src={coverImage.image_url}
-                          alt={coverImage.alt ?? product.name}
-                          fill
-                          className="object-cover transition duration-500 group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center px-8 text-center text-slate-400">
-                          Image en préparation
-                        </div>
-                      )}
-
-                      {hasPromotion && (
-                        <span className="absolute left-5 top-5 rounded-full bg-red-600 px-4 py-2 text-sm font-bold text-white">
-                          Promo
-                        </span>
-                      )}
-                    </div>
-                  </Link>
-
-                  <div className="flex flex-1 flex-col p-7">
-                    <Link href={href}>
-                      <h2 className="text-2xl font-bold text-[#103a63] transition hover:text-[#d9c45a]">
-                        {product.name}
-                      </h2>
-                    </Link>
-
-                    {product.short_description && (
-                      <p className="mt-4 line-clamp-3 leading-7 text-slate-600">
-                        {product.short_description}
-                      </p>
-                    )}
-
-                    <div className="mt-6 flex flex-wrap items-end gap-3">
-                      {price && (
-                        <p className="text-3xl font-bold text-[#103a63]">
-                          {pricing.fromVariants ? `Dès ${price}` : price}
-                        </p>
-                      )}
-
-                      {compareAtPrice && hasPromotion && (
-                        <p className="pb-1 text-lg text-slate-400 line-through">
-                          {compareAtPrice}
-                        </p>
-                      )}
-                    </div>
-
-                    <Link
-                      href={href}
-                      className="mt-auto inline-flex w-fit rounded-full bg-[#103a63] px-6 py-3 font-semibold text-white transition hover:bg-[#0b2c4c]"
-                    >
-                      Découvrir
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                href={`${config.routeBase}/${product.slug}`}
+              />
+            ))}
           </div>
         )}
       </section>
