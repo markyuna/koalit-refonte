@@ -1,6 +1,6 @@
 const expertises = [
   "Conception française",
-  "Fabrication européenne",
+  "Fabrication portugaise",
   "Matériaux certifiés",
   "Conseil personnalisé",
 ];
