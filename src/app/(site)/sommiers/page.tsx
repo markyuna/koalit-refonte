@@ -45,7 +45,7 @@ function getCoverImage(images: ProductImage[] | null) {
 }
 
 export default async function SommiersPage() {
-  const { data: products, error } = await supabase
+  const { data, error } = await supabase
     .from("products")
     .select(
       `
@@ -56,6 +56,9 @@ export default async function SommiersPage() {
       price,
       compare_at_price,
       is_active,
+      categories!inner (
+        slug
+      ),
       product_images (
         image_url,
         alt,
@@ -64,12 +67,14 @@ export default async function SommiersPage() {
     `
     )
     .eq("is_active", true)
-    .eq("category", "sommiers")
+    .eq("categories.slug", "sommiers")
     .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Erreur chargement sommiers:", error);
   }
+
+  const products = (data ?? []) as unknown as Product[];
 
   return (
     <main className="min-h-screen bg-[var(--koalit-cream)] px-6 py-28">
@@ -102,7 +107,7 @@ export default async function SommiersPage() {
                   key={product.id}
                   className="group overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(8,41,71,0.12)]"
                 >
-                  <Link href={`/products/${product.slug}`}>
+                  <Link href={`/sommiers/${product.slug}`}>
                     <div className="relative aspect-[4/3] overflow-hidden bg-white">
                       {coverImage ? (
                         <Image

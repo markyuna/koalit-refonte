@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AdminPage() {
   return (
     <main className="min-h-screen bg-[#f8f6f1]">
@@ -18,7 +20,7 @@ export default function AdminPage() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <a
+          <Link
             href="/admin/products"
             className="rounded-[2rem] border border-white bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
           >
@@ -29,7 +31,7 @@ export default function AdminPage() {
             <p className="mt-3 text-slate-600">
               Ajouter, modifier ou supprimer les produits du catalogue.
             </p>
-          </a>
+          </Link>
 
           <div className="rounded-[2rem] border border-white bg-white p-8 opacity-70 shadow-sm">
             <h2 className="text-xl font-bold text-[#103a63]">

@@ -24,7 +24,7 @@ export default function ExperienceSection() {
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="max-w-3xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-[var(--koalit-gold)]">
-            L’expérience Koa'lit
+            L’expérience Koa&apos;lit
           </p>
 
           <h2 className="text-4xl font-semibold tracking-tight text-[var(--koalit-blue-dark)] md:text-6xl">
@@ -34,7 +34,7 @@ export default function ExperienceSection() {
           </h2>
 
           <p className="mt-6 text-lg leading-8 text-[var(--koalit-text)]">
-            Koa'lit accompagne chaque client dans le choix d’une literie adaptée
+            Koa&apos;lit accompagne chaque client dans le choix d’une literie adaptée
             à son corps, à ses habitudes et à son rythme de vie.
           </p>
         </div>
