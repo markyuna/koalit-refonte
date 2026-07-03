@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# unused original (uncompressed) video, kept locally only
+/public/video/koalit.mp4
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
