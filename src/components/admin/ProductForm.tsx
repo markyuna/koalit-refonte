@@ -30,7 +30,11 @@ type ProductFormProps = {
 
 const categories = [
   { label: "Matelas", value: "matelas" },
-  { label: "Oreillers", value: "oreillers" },
+  { label: "Sommiers", value: "sommiers" },
+  { label: "Oreillers et couettes", value: "oreillers" },
+  { label: "Lits coffres", value: "lits-coffres" },
+  { label: "Têtes de lit", value: "tetes-de-lit" },
+  { label: "Linge de lit", value: "linge-de-lit" },
 ];
 
 function generateSlug(value: string) {
