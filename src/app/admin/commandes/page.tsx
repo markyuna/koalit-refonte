@@ -2,6 +2,7 @@
 
 import { createAdminClient } from "@/lib/supabase-admin";
 import { formatPrice } from "@/lib/product-helpers";
+import DeleteOrderButton from "@/components/admin/DeleteOrderButton";
 
 type OrderItem = {
   id: string;
@@ -67,6 +68,7 @@ export default async function AdminCommandesPage() {
                     <th className="px-6 py-4 text-sm font-semibold">Articles</th>
                     <th className="px-6 py-4 text-sm font-semibold">Total</th>
                     <th className="px-6 py-4 text-sm font-semibold">Statut</th>
+                    <th className="px-6 py-4 text-sm font-semibold">Actions</th>
                   </tr>
                 </thead>
 
@@ -103,6 +105,10 @@ export default async function AdminCommandesPage() {
                         <span className="rounded-full bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">
                           {STATUS_LABELS[order.status] ?? order.status}
                         </span>
+                      </td>
+
+                      <td className="px-6 py-5">
+                        <DeleteOrderButton orderId={order.id} />
                       </td>
                     </tr>
                   ))}
