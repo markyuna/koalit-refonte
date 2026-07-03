@@ -1,13 +1,25 @@
 // src/app/(site)/linge-de-lit/[slug]/page.tsx
 
+import type { Metadata } from "next";
+
 import CategoryDetailPage from "@/components/product/CategoryDetailPage";
 import { categories } from "@/lib/categories";
+import { buildProductMetadata, getProductForSeo } from "@/lib/product-seo";
 
 type Props = {
   params: Promise<{
     slug: string;
   }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductForSeo(categories["linge-de-lit"].slug, slug);
+  return buildProductMetadata(
+    product,
+    `${categories["linge-de-lit"].routeBase}/${slug}`
+  );
+}
 
 export default async function LingeDeLitDetailPage({ params }: Props) {
   const { slug } = await params;

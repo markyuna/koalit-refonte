@@ -1,5 +1,6 @@
 // src/app/(site)/matelas/[slug]/page.tsx
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -16,6 +17,11 @@ import {
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductPurchasePanel from "@/components/product/ProductPurchasePanel";
 import { supabase } from "@/lib/supabase";
+import {
+  buildProductJsonLd,
+  buildProductMetadata,
+  getProductForSeo,
+} from "@/lib/product-seo";
 
 type ProductImage = {
   image_url: string;
@@ -61,6 +67,12 @@ function getGalleryImages(images: ProductImage[] | null) {
 function getCoverIndex(images: ProductImage[]) {
   const index = images.findIndex((image) => image.is_cover);
   return index === -1 ? 0 : index;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductForSeo("matelas", slug);
+  return buildProductMetadata(product, `/matelas/${slug}`);
 }
 
 export default async function MatelasDetailPage({ params }: Props) {
@@ -122,8 +134,15 @@ export default async function MatelasDetailPage({ params }: Props) {
     primaryPrice !== null &&
     primaryCompareAtPrice > primaryPrice;
 
+  const jsonLd = buildProductJsonLd(product, `/matelas/${slug}`, primaryPrice);
+
   return (
     <main className="min-h-screen bg-[#F8F5F0]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <section className="mx-auto max-w-7xl px-5 pb-8 pt-28 sm:px-6 sm:pt-32 md:pb-12 lg:pb-16">
         <Link
           href="/matelas"
