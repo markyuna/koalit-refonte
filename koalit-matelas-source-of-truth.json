@@ -1,0 +1,162 @@
+{
+  "$schema": "koalit-matelas-source-of-truth",
+  "generatedAt": "2026-07-03",
+  "generatedFrom": "Supabase products/product_variants tables (current live data)",
+  "products": [
+    {
+      "name": "Cassiopée",
+      "slug": "matelas-cassiopee",
+      "canonicalUrl": "https://www.koalit.fr/product-page/matelas-cassiopee",
+      "brandColorName": "purple",
+      "brandColorHex": "#6B5271",
+      "accueil": "Ferme",
+      "tagline": "Cassiopée, c'est votre premier vrai matelas.",
+      "composition": "mousse Super Soft, soutien ferme, mousse standard normale — épaisseur 27 cm.",
+      "description": "Idéal pour : dormeurs sur le côté, sensibles aux douleurs d'épaules, à la recherche d'un confort premium accessible.\n\nComposition : mousse Super Soft, soutien ferme, mousse standard normale — épaisseur 27 cm.\n\nPoints forts :\n- Indépendance de couchage\n- Soutien ferme\n- Mousse Super Soft\n- Mousse standard normale\n\nConfort essentiel, honnête et durable.\n\nConception française, fabrication portugaise. Garantie 10 ans. Disponible en plusieurs dimensions (90x190 à 200x200), prix ci-dessus pour la taille de base.",
+      "basePrice": 567,
+      "baseOriginalPrice": null,
+      "dimensions": [
+        {
+          "dimension": "90x190",
+          "price": 567,
+          "originalPrice": null
+        },
+        {
+          "dimension": "140x190",
+          "price": 783,
+          "originalPrice": null
+        },
+        {
+          "dimension": "160x200",
+          "price": 913,
+          "originalPrice": null
+        },
+        {
+          "dimension": "180x200",
+          "price": 1069,
+          "originalPrice": null
+        }
+      ]
+    },
+    {
+      "name": "Stella",
+      "slug": "matelas-stella",
+      "canonicalUrl": "https://www.koalit.fr/product-page/matelas-stella",
+      "brandColorName": "mustard",
+      "brandColorHex": "#B8863C",
+      "accueil": "Équilibré",
+      "tagline": "Stella est là pour tout le monde, toutes les nuits, sans jamais faillir.",
+      "composition": "630 ressorts ensachés, mousse Super Soft, mousse à mémoire de forme, 5 zones de confort — épaisseur 27 cm.",
+      "description": "Idéal pour : dormeurs exigeants, qui veulent le meilleur sans compromis.\n\nComposition : 630 ressorts ensachés, mousse Super Soft, mousse à mémoire de forme, 5 zones de confort — épaisseur 27 cm.\n\nPoints forts :\n- Indépendance de couchage\n- Soutien ferme\n- Mousse Super Soft\n- Mousse à mémoire de forme\n- 5 zones de confort\n\nÉquilibre parfait entre fermeté et moelleux, polyvalence totale.\n\nConception française, fabrication portugaise. Garantie 10 ans. Disponible en plusieurs dimensions (90x190 à 200x200), prix ci-dessus pour la taille de base.",
+      "basePrice": 399,
+      "baseOriginalPrice": 672,
+      "dimensions": [
+        {
+          "dimension": "90x190",
+          "price": 399,
+          "originalPrice": 672
+        },
+        {
+          "dimension": "90x200",
+          "price": 399,
+          "originalPrice": 672
+        },
+        {
+          "dimension": "140x190",
+          "price": 675.48,
+          "originalPrice": 866
+        },
+        {
+          "dimension": "140x200",
+          "price": 675.48,
+          "originalPrice": 866
+        },
+        {
+          "dimension": "160x200",
+          "price": 771.42,
+          "originalPrice": 989
+        },
+        {
+          "dimension": "180x200",
+          "price": 862.68,
+          "originalPrice": 1106
+        },
+        {
+          "dimension": "200x200",
+          "price": 936,
+          "originalPrice": 1200
+        }
+      ]
+    },
+    {
+      "name": "Lyre",
+      "slug": "matelas-lyre",
+      "canonicalUrl": "https://www.koalit.fr/product-page/matelas-lyre",
+      "brandColorName": "olive green",
+      "brandColorHex": "#6E7B4E",
+      "accueil": "Équilibré",
+      "tagline": "Lyre est le matelas des sensibles, des insomniaques guéris, de ceux qui ont longtemps cherché.",
+      "composition": "800 ressorts ensachés, mousse EnerGex, mousse à mémoire de forme, 5 zones de confort — épaisseur 29 cm.",
+      "description": "Idéal pour : dormeurs agités, couples, besoin d'indépendance de couchage.\n\nComposition : 800 ressorts ensachés, mousse EnerGex, mousse à mémoire de forme, 5 zones de confort — épaisseur 29 cm.\n\nPoints forts :\n- Indépendance de couchage\n- Soutien ferme\n- Mousse EnerGex\n- Mousse à mémoire de forme\n- 5 zones de confort\n\nAccueil du corps exceptionnel, isolation des mouvements, silence absolu.\n\nConception française, fabrication portugaise. Garantie 10 ans. Disponible en plusieurs dimensions (90x190 à 180x200), prix ci-dessus pour la taille de base.",
+      "basePrice": 610,
+      "baseOriginalPrice": 910,
+      "dimensions": [
+        {
+          "dimension": "90x190",
+          "price": 610,
+          "originalPrice": 910
+        },
+        {
+          "dimension": "90x200",
+          "price": 610,
+          "originalPrice": 910
+        },
+        {
+          "dimension": "140x190",
+          "price": 939,
+          "originalPrice": 1239
+        },
+        {
+          "dimension": "160x200",
+          "price": 1131,
+          "originalPrice": 1431
+        },
+        {
+          "dimension": "180x200",
+          "price": 1312,
+          "originalPrice": 1612
+        }
+      ]
+    },
+    {
+      "name": "Librea",
+      "slug": "matelas-librea",
+      "canonicalUrl": "https://www.koalit.fr/product-page/matelas-librea",
+      "brandColorName": "blue",
+      "brandColorHex": "#4C6B8A",
+      "accueil": "Moelleux comme un nuage",
+      "tagline": "Parce que le sommeil que nous vous offrons n'existait pas encore.",
+      "composition": "3500 ressorts ensachés, mousse gel premium, mousse à mémoire de forme — épaisseur 42 cm.",
+      "description": "Idéal pour : dormeurs sur le dos, morphologie standard, à la recherche du juste milieu.\n\nComposition : 3500 ressorts ensachés, mousse gel premium, mousse à mémoire de forme — épaisseur 42 cm.\n\nPoints forts :\n- Indépendance de couchage\n- Soutien ferme\n- Mousse gel premium\n- Mousse à mémoire de forme\n- Ressorts ensachés\n\nLe meilleur matelas fabriqué en France.\n\nConception française, fabrication portugaise. Garantie 10 ans. Disponible en plusieurs dimensions (140x190 à 180x200), prix ci-dessus pour la taille de base.",
+      "basePrice": 1489,
+      "baseOriginalPrice": null,
+      "dimensions": [
+        {
+          "dimension": "140x190",
+          "price": 1489,
+          "originalPrice": null
+        },
+        {
+          "dimension": "160x200",
+          "price": 1689,
+          "originalPrice": null
+        },
+        {
+          "dimension": "180x200",
+          "price": 1989,
+          "originalPrice": null
+        }
+      ]
+    }
+  ]
+}
