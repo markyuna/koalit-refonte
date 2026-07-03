@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import LocalBusinessSchema from "@/components/seo/LocalBusinessSchema";
@@ -84,6 +84,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.koalit.fr",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#103a63",
 };
 
 export default function RootLayout({
