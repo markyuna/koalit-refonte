@@ -22,6 +22,7 @@ type ProductImage = {
   image_url: string;
   alt: string | null;
   is_cover: boolean | null;
+  position: number | null;
 };
 
 type ProductVariant = {
@@ -50,22 +51,17 @@ type Props = {
   }>;
 };
 
-function getCoverImage(images: ProductImage[] | null) {
-  if (!images || images.length === 0) return null;
-
-  return images.find((image) => image.is_cover) ?? images[0];
-}
-
 function getGalleryImages(images: ProductImage[] | null) {
   if (!images || images.length === 0) return [];
 
-  const cover = getCoverImage(images);
-
-  const otherImages = images.filter(
-    (image) => image.image_url !== cover?.image_url
+  return [...images].sort(
+    (a, b) => (a.position ?? 0) - (b.position ?? 0)
   );
+}
 
-  return cover ? [cover, ...otherImages] : images;
+function getCoverIndex(images: ProductImage[]) {
+  const index = images.findIndex((image) => image.is_cover);
+  return index === -1 ? 0 : index;
 }
 
 export default async function MatelasDetailPage({ params }: Props) {
@@ -89,7 +85,8 @@ export default async function MatelasDetailPage({ params }: Props) {
       product_images (
         image_url,
         alt,
-        is_cover
+        is_cover,
+        position
       ),
       product_variants (
         id,
@@ -102,6 +99,7 @@ export default async function MatelasDetailPage({ params }: Props) {
     .eq("slug", slug)
     .eq("is_active", true)
     .eq("categories.slug", "matelas")
+    .order("position", { referencedTable: "product_images", ascending: true })
     .single();
 
   if (error || !data) {
@@ -112,6 +110,7 @@ export default async function MatelasDetailPage({ params }: Props) {
   const product = data as unknown as Product;
 
   const images = getGalleryImages(product.product_images);
+  const initialIndex = getCoverIndex(images);
 
   const variants = product.product_variants ?? [];
   const sortedVariants = [...variants].sort((a, b) => a.price - b.price);
@@ -138,6 +137,7 @@ export default async function MatelasDetailPage({ params }: Props) {
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
           <ProductGallery
             images={images}
+            initialIndex={initialIndex}
             productName={product.name}
             hasPromotion={hasPromotion}
             badgeLabel="Collection Matelas"
